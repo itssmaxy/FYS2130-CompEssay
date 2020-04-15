@@ -160,7 +160,6 @@ ax.plot(np.linspace(0, t, len(h)), h)
 plt.show()
 
 
-
 """
 plt.plot(sun_orbit[:,0], sun_orbit[:,1], label="Sun")
 plt.xlabel("x-position (AU)")
