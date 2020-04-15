@@ -37,33 +37,23 @@ def integrator(planets,sun,planets_index):
     masses = [mass_plan1]
     x0xsun,x0ysun,v0xsun,v0ysun = sun
     h = np.zeros(N)
-    
-    
     x_planets = np.asarray([np.zeros((N,2),float) for i in range(number_of_planets)])
     v_planets = [np.asarray([planets[i,2],planets[i,3]]) for i in range(number_of_planets)]
 
     for i in range(number_of_planets):
         x_planets[i,0,:] = [planets[i,0],planets[i,1]]
-
     a_i_planets = np.zeros((number_of_planets,2))
     a_iplus1_planets = np.zeros((number_of_planets,2))
 
     for i in range(number_of_planets):
         a_i_planets[i] = gravity_on_planet(x0xsun,x0ysun,planets[i,0],planets[i,1],i)
-
     x_sun = np.zeros((N,2),float)
     x_sun[0,:] = [x0xsun,x0ysun]
     v_sun = np.asarray([v0xsun,v0ysun],float)
     a_i_sun = -sum(a_i_planets)/sunmass
-
     count = 0
     for i in range(N-1):
-    
-    
         t+=dt
-
-        
-
         cm_x = [x_planets[g,i,0]*masses[g] for g in range(number_of_planets)]
         cm_y = [x_planets[g,i,1]*masses[g] for g in range(number_of_planets)]
         cm = [(sum(cm_x)+sunmass*x_sun[i,0])/(sum(masses)+sunmass), \
@@ -163,7 +153,7 @@ plt.xlabel("x-position (AU)")
 plt.ylabel("y-position (AU)")
 plt.legend(loc='lower right')
 #plt.savefig("garvity-sun-pos.jpeg")
-plt.show()
+plt.show() #viser banen til objektene
 
 fig, ax = plt.subplots()
 ax.plot(np.linspace(0, t, len(h)), h)
