@@ -107,7 +107,7 @@ def integrator(planets,sun,planets_index):
 
 
 def h_stretch(r,omega,R,t):
-    return 8*Gr*sunmass/(r*c**4)*omega**2**R**2*np.cos(2*omega*(t-r/c))
+    return 8*Gr*sunmass/(r*c**4)*omega**2*R**2*np.cos(2*omega*(t-r/c))
 
 #Input index of planets wanted in simulation
 planets_index = [0]
@@ -165,6 +165,8 @@ plt.ylabel("y-position (AU)")
 plt.legend(loc='lower right')
 #plt.savefig("garvity-sun-pos.jpeg")
 plt.show()
+
+
 
 """
 plt.plot(sun_orbit[:,0], sun_orbit[:,1], label="Sun")
