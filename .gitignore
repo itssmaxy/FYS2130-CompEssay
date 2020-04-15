@@ -4,6 +4,7 @@
 
 ### Linux ###
 *~
+*.vscode
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
@@ -227,6 +228,7 @@ bld/
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
+
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
