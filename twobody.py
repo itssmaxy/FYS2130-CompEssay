@@ -103,7 +103,7 @@ def integrator(planets,sun,planets_index):
 
 
 
-    return x_planets,x_sun, count 
+    return x_planets,x_sun, count, h, t
 
 
 def h_stretch(r,omega,R,t):
@@ -136,8 +136,7 @@ Sun = [x_sun,y_sun,vx_sun,vy_sun]
 
 fig, ax = plt.subplots()
 
-planet_orbit, sun_orbit, count = integrator(planets,Sun,planets_index)
-
+planet_orbit, sun_orbit, count, h, t = integrator(planets,Sun,planets_index)
 
 planet_orbit = planet_orbit[0,:count+1,:]
 print(np.shape(planet_orbit))
@@ -164,6 +163,10 @@ plt.xlabel("x-position (AU)")
 plt.ylabel("y-position (AU)")
 plt.legend(loc='lower right')
 #plt.savefig("garvity-sun-pos.jpeg")
+plt.show()
+
+fig, ax = plt.subplots()
+ax.plot(np.linspace(0, t, len(h)), h)
 plt.show()
 
 
