@@ -186,6 +186,7 @@ def animate1(i):
     return line1,
 
 # New artists and updater for the spinning bodies
+# Renders two object artists via the same renderer
 def init2():
     line2.set_data([], [])
     return line2,
@@ -203,38 +204,9 @@ def update(i, line2, line3):
     line3.set_data(x, y)
     return [line2,line3]
 
-""" Gammel kode
-def init2():
-    line2.set_data([], [])
-    return line2,
-
-# animation function.  This is called sequentially
-def animate2(i):
-    #x = np.linspace(int(i*t/(1e2)),int((i+1)*t/(1e2)), 1e2)
-    x = planet_orbit[int(i*intr):int((i+1)*intr),0]
-    y = planet_orbit[int(i*intr):int((i+1)*intr),1]
-    line2.set_data(x, y)
-    return line2,
-
-def init3():
-    line3.set_data([], [])
-    return line3,
-
-# animation function.  This is called sequentially
-def animate3(i):
-    #x = np.linspace(int(i*t/(1e2)),int((i+1)*t/(1e2)), 1e2)
-    x = sun_orbit[int(i*intr):int((i+1)*intr),0]
-    y = sun_orbit[int(i*intr):int((i+1)*intr),1]
-    line3.set_data(x, y)
-    return line3,
-"""
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
                                frames=int(N/intr), interval=100, blit=True)
 anim2 = animation.FuncAnimation(fig, update, init_func=init2,
                                frames=int(N/intr), fargs=[line2, line3], interval=100, blit=True)
-""" Gammel kode
-    anim3 = animation.FuncAnimation(fig, animate3, init_func=init3,
-                               #frames=int(N/intr), interval=100, blit=True)
-"""
 plt.show()
