@@ -4,10 +4,13 @@ import sys
 from matplotlib import animation
 
 dict = {}
-dict['bh'] = [1,1.9746*1e-8]#Solarmass and AU
+"""
+Define objects first by weight and then radius, First Solarmass and then radius
+"""
+dict['bh'] = [1,1.9746*1e-8]#Blackhole 
 dict['earth'] = [0.000003003,4.26354*1E-5]
 print('Please choose from the following:')
-print('bh --- earth ----  ')
+print('bh --- earth ----')
 object1 = input('Object 1:')
 object2 = input('Object 2:')
 sunmass = dict[object1][0]
@@ -109,7 +112,9 @@ def h_stretch(r,omega,R,t):
 planets_index = [0]
 r = 1
 
-
+"""
+Collision or orbit computing
+"""
 answer= input("If you want to collide press 'c'. If you want to orbit press 'o'")
 hyp = np.asarray([-r,0])
 tan_vec = np.asarray([-hyp[1]/np.linalg.norm(hyp),\
@@ -124,16 +129,12 @@ elif answer == 'o':
     planet_1 = np.asarray([[r,0,v_orbit[0],v_orbit[1]]])
     planet_2 = np.asarray([0,0,0,0])
 
+
 #Final results and plotting
-
 fig, (ax1,ax2) = plt.subplots(1,2)
-
 planet_orbit, sun_orbit, count, h, t,N = integrator(planet_1,planet_2,planets_index)
-
 planet_orbit = planet_orbit[0,:count+1,:]
-
 sun_orbit = sun_orbit[:count+1,:]
-
 
 
 r = np.linalg.norm(planet_orbit[-1,:] - sun_orbit[-1,:])/2
@@ -154,6 +155,7 @@ ax1.legend(loc='lower right')
 ax2.plot(np.linspace(0,t,len(h)),h)
 ax2.set(xlabel=('Time(y)'),ylabel=('Distortion(Au)'))
 plt.show() #viser banen til objektene
+
 """
 Animation kode
 """
@@ -180,6 +182,7 @@ def animate1(i):
     y = h[int((i*intr)):int((i+1)*intr)]
     line1.set_data(x, y)
     return line1,
+
 def init2():
     line2.set_data([], [])
     return line2,
@@ -191,6 +194,7 @@ def animate2(i):
     y = planet_orbit[int(i*intr):int((i+1)*intr),1]
     line2.set_data(x, y)
     return line2,
+
 def init3():
     line3.set_data([], [])
     return line3,
