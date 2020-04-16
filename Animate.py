@@ -35,7 +35,7 @@ def integrator(planets,sun,planets_index):
         return np.asarray([ax,ay],float)
 
     print("--------------")
-    
+
 
     time = float(input("Choose simulation time in yrs: "))
     dt = 0.0001
@@ -99,7 +99,7 @@ def integrator(planets,sun,planets_index):
 
         count +=1
         #i += 1
-    return x_planets,x_sun, count, h, t
+    return x_planets,x_sun, count, h, t,N
 
 
 def h_stretch(r,omega,R,t):
@@ -128,7 +128,7 @@ elif answer == 'o':
 
 fig, (ax1,ax2) = plt.subplots(1,2)
 
-planet_orbit, sun_orbit, count, h, t = integrator(planet_1,planet_2,planets_index)
+planet_orbit, sun_orbit, count, h, t,N = integrator(planet_1,planet_2,planets_index)
 
 planet_orbit = planet_orbit[0,:count+1,:]
 
@@ -159,7 +159,7 @@ Animation kode
 """
 
 
-intr = int(1e3)
+intr = int(1e2)
 # First set up the figure, the axis, and the plot element we want to animate
 fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
@@ -205,9 +205,9 @@ def animate3(i):
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
-                               frames=int(1e5/intr), interval=100, blit=True)
+                               frames=int(N/intr), interval=100, blit=True)
 anim2 = animation.FuncAnimation(fig, animate2, init_func=init2,
-                               frames=int(1e5/intr), interval=100, blit=True)
+                               frames=int(N/intr), interval=100, blit=True)
 anim3 = animation.FuncAnimation(fig, animate3, init_func=init3,
-                               frames=int(1e5/intr), interval=100, blit=True)
+                               frames=int(N/intr), interval=100, blit=True)
 plt.show()
