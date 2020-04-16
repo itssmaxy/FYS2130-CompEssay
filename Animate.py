@@ -4,10 +4,14 @@ import sys
 from matplotlib import animation
 
 dict = {}
+<<<<<<< HEAD
 """
 Define objects first by weight and then radius, First Solarmass and then radius
 """
 dict['bh'] = [1,1.9746*1e-8]#Blackhole 
+=======
+dict['bh'] = [1,5.91824521E-7]#Solarmass and AU
+>>>>>>> 90a536e3b5c5f07d81da358071a9408a77f9acb7
 dict['earth'] = [0.000003003,4.26354*1E-5]
 print('Please choose from the following:')
 print('bh --- earth ----')
@@ -110,7 +114,7 @@ def h_stretch(r,omega,R,t):
 
 #Input index of planets wanted in simulation
 planets_index = [0]
-r = 1
+r = 5
 
 """
 Collision or orbit computing
@@ -161,7 +165,7 @@ Animation kode
 """
 
 
-intr = int(1e2)
+intr = int(1e3)
 # First set up the figure, the axis, and the plot element we want to animate
 fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
