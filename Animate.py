@@ -111,7 +111,7 @@ def h_stretch(r,omega,R,t):
 
 #Input index of planets wanted in simulation
 planets_index = [0]
-r = 5
+r = 2
 
 """
 Collision or orbit computing
