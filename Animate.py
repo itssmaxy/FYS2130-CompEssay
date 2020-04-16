@@ -107,7 +107,7 @@ def h_stretch(r,omega,R,t):
 
 #Input index of planets wanted in simulation
 planets_index = [0]
-r = 5
+r = 2
 
 
 answer= input("If you want to collide press 'c'. If you want to orbit press 'o'")
