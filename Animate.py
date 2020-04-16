@@ -18,7 +18,7 @@ radius_2 = dict[object2][1]#0.00005267828
 
 Gr = 39.47841760435743
 c = 63239.7263 #Au/yr
-#r = 6.32397263E12 #AU
+r1= 6.32397263E12 #AU
 
 
 #Integration Loop
@@ -91,7 +91,7 @@ def integrator(planets,sun,planets_index):
         R = np.linalg.norm(x_sun[i+1,:] - x_planets[0,i+1,:])
         omega = np.sqrt(Gr*sunmass/(4*R**3))
 
-        h[i+1] = h_stretch(r,omega,R,t)
+        h[i+1] = h_stretch(r1,omega,R,t)
 
 
         if R < (radius_1+radius_2):
