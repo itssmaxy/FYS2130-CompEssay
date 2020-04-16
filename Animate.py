@@ -4,7 +4,7 @@ import sys
 from matplotlib import animation
 
 dict = {}
-dict['bh'] = [1,5.91824521E-7]#Solarmass and AU
+dict['bh'] = [30,5.91824521E-7]#Solarmass and AU
 dict['earth'] = [0.000003003,4.26354*1E-5]
 print('Please choose from the following:')
 print('bh --- earth ----  ')
