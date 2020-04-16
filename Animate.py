@@ -4,14 +4,11 @@ import sys
 from matplotlib import animation
 
 dict = {}
-<<<<<<< HEAD
+
 """
 Define objects first by weight and then radius, First Solarmass and then radius
 """
-dict['bh'] = [1,1.9746*1e-8]#Blackhole 
-=======
-dict['bh'] = [1,5.91824521E-7]#Solarmass and AU
->>>>>>> 90a536e3b5c5f07d81da358071a9408a77f9acb7
+dict['bh'] = [30,5.91824521E-7]#Solarmass and AU
 dict['earth'] = [0.000003003,4.26354*1E-5]
 print('Please choose from the following:')
 print('bh --- earth ----')
