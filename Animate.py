@@ -8,7 +8,7 @@ dict = {}
 """
 Define objects first by weight and then radius, First Solarmass and then radius
 """
-dict['bh'] = [30,5.91824521E-7]#Solarmass and AU
+dict['bh'] = [1,5.91824521E-7]#Solarmass and AU
 dict['earth'] = [0.000003003,4.26354*1E-5]
 print('Please choose from the following:')
 print('bh --- earth ----')
@@ -111,7 +111,7 @@ def h_stretch(r,omega,R,t):
 
 #Input index of planets wanted in simulation
 planets_index = [0]
-r = 2
+r = 1
 
 """
 Collision or orbit computing
