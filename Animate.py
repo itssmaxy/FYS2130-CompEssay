@@ -35,10 +35,11 @@ def integrator(planets,sun,planets_index):
         return np.asarray([ax,ay],float)
 
     print("--------------")
-    N = int(1E5)
+    
 
     time = float(input("Choose simulation time in yrs: "))
-    dt = time/N
+    dt = 0.0001
+    N = int(time/dt)
 
     t = dt
     number_of_planets = int(len(planets))
@@ -158,7 +159,7 @@ Animation kode
 """
 
 
-intr = 1e3
+intr = int(1e3)
 # First set up the figure, the axis, and the plot element we want to animate
 fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
