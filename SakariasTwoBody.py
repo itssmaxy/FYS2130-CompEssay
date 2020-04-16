@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys 
 
-#blabla
+#blablagit status
 
 sunmass = 6.38437672E-06
 mass_plan1 = 6.38437672E-06
