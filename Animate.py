@@ -117,6 +117,7 @@ hyp[0]/np.linalg.norm(hyp)])
 vel = np.sqrt(Gr*mass_plan1*sunmass/np.linalg.norm(hyp))
 v_orbit = vel*tan_vec
 v_colide = v_orbit*0.5 + vel*np.asarray([-0.5,0])
+
 if answer == 'c':
     planet_1 = np.asarray([[r,0,v_colide[0],v_colide[1]]])
     planet_2 = np.asarray([0,0,0,0])
