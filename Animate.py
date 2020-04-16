@@ -35,10 +35,11 @@ def integrator(planets,sun,planets_index):
         return np.asarray([ax,ay],float)
 
     print("--------------")
-    N = int(1E5)
+    
 
     time = float(input("Choose simulation time in yrs: "))
-    dt = time/N
+    dt = 0.0001
+    N = int(time/dt)
 
     t = dt
     number_of_planets = int(len(planets))
