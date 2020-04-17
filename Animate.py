@@ -7,10 +7,10 @@ dict = {}
 """
 Define objects first by weight and then radius, First Solarmass and then radius
 """
-dict['bh'] = [1,5.91824521E-7]#BlackHole
-dict['ns'] = [1.4,1.00268807*1E-7] #Neutral Star
-dict['sun'] = [1,0.0046524726] # Sun
-dict['rg'] = [0.8,0.46524726] #Red Giant
+dict['bh'] = [1,5.91824521E-7,'k']#BlackHole
+dict['ns'] = [1.4,1.00268807*1E-7,'w'] #Neutral Star
+dict['sun'] = [1,0.0046524726,'y'] # Sun
+dict['rg'] = [0.8,0.46524726,'r'] #Red Giant
 print('Please choose from the following:')
 print('bh (Black Hole) --- sun --- ns (Neutron Star)---rg (Red Giant)')
 object1 = input('Object 1:')
@@ -202,8 +202,8 @@ ax2.set(xlim=(-dist,dist),ylim=(-dist,dist),xlabel='AU',ylabel='AU',title='Objec
 line1, = ax1.plot(np.linspace(0,10,intr), h[0:int(intr)], lw=2)
 line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1)
 line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2)
-patch1 = plt.Circle((planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1]), radius_1)
-patch2 = plt.Circle((sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1]), radius_2)
+patch1 = plt.Circle((planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1]), radius_1,color=dict[object1][2])
+patch2 = plt.Circle((sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1]), radius_2,color=dict[object2][2])
 # initialization function: plot the background of each frame
 def init1():
     line1.set_data([], [])
