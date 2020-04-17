@@ -145,9 +145,15 @@ def MonsieurFourier(h,dt,t):
     n_Size = h.size
     dt = dt
     FourierTransform = np.fft.fft(h)
+<<<<<<< HEAD
     Sample_Frequency = np.linspace(0,1/(2*t), Sampling//2)
     
     plt.plot(Sample_Frequency, 2/Sampling*np.abs(FourierTransform[:Sampling//2]),label="Fourier Analysis")
+=======
+    Sample_Frequency = np.fft.fftfreq(n_Size, d= dt)
+
+    plt.plot(Sample_Frequency, np.abs(FourierTransform),label="Fourier Analysis")
+>>>>>>> b5154a27d8f56c31c44595494cf64be51864a403
     plt.legend()
     plt.show()
 
@@ -202,7 +208,8 @@ ax2.set(xlim=(-dist,dist),ylim=(-dist,dist),xlabel='AU',ylabel='AU',title='Objec
 line1, = ax1.plot(np.linspace(0,10,intr), h[0:int(intr)], lw=2)
 line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1)
 line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2)
-
+patch1 = plt.Circle((planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1]), radius_1)
+patch2 = plt.Circle((sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1]), radius_2)
 # initialization function: plot the background of each frame
 def init1():
     line1.set_data([], [])
@@ -225,19 +232,23 @@ def init3():
     line2.set_data([],[])
     return line3,line2
 
-def update(i, line2, line3):
+def update(i, line2, line3,patch1,patch2):
     x = planet_orbit[int(i*intr):int((i+1)*intr),0]
     y = planet_orbit[int(i*intr):int((i+1)*intr),1]
     line2.set_data(x, y)
+    patch1.center= (x[-1],y[-1])
+    ax2.add_patch(patch1)
     x = sun_orbit[int(i*intr):int((i+1)*intr),0]
     y = sun_orbit[int(i*intr):int((i+1)*intr),1]
     line3.set_data(x, y)
-    return [line2,line3]
+    patch2.center= (x[-1],y[-1])
+    ax2.add_patch(patch2)
+    return [line2,line3,patch1,patch2]
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
                                frames=int(N/intr), interval=150, blit=True)
 anim2 = animation.FuncAnimation(fig, update, init_func=init3,
-                               frames=int(N/intr), fargs=[line2, line3], interval=150, blit=True)
+                               frames=int(N/intr), fargs=[line2, line3,patch1,patch2], interval=150, blit=True)
 plt.legend()
 plt.show()
