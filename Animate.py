@@ -102,7 +102,9 @@ def integrator(planets,sun,planets_index):
         if np.linalg.norm(v_planets[0])>100:
             print('THE OBJECTS HAVE COLLIDED!')
             break
-
+        if R<(radius_1+radius_2):
+            print('THE OBJECTS HAVE COLLIDED!')
+            break
         count +=1
         #i += 1
     return x_planets,x_sun, count, h, t,N ,dt
@@ -142,7 +144,7 @@ planet_orbit, sun_orbit, count, h, t,N, dt = integrator(planet_1,planet_2,planet
 #Fourier Transform
 
 def MonsieurFourier(h,dt,t):
-    
+
     dt = dt
     FourierTransform = np.fft.fft(h)
     Sample_Frequency = np.linspace(0,1/(2*t), Sampling//2)
