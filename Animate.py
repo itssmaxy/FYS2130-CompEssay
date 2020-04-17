@@ -173,7 +173,7 @@ intr = int(1e3)
 # First set up the figure, the axis, and the plot element we want to animate
 fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
-ax2.set(xlim=(-dist,dist),ylim=(-dist,dist))
+ax2.set(xlim=(-dist,dist),ylim=(-dist,dist),xlabel='AU',ylabel='AU',title='Objects trajectory')
 line1, = ax1.plot(np.linspace(0,10,intr), h[0:int(intr)], lw=2)
 line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1)
 line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2)
