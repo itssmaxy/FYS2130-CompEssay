@@ -4,7 +4,6 @@ import sys
 from matplotlib import animation
 
 dict = {}
-
 """
 Define objects first by weight and then radius, First Solarmass and then radius
 """
@@ -22,13 +21,12 @@ mass_plan1 = dict[object2][0]
 radius_1 = dict[object1][1]#0.00005267828
 radius_2 = dict[object2][1]#0.00005267828
 
-Gr = 39.47841760435743
+Gr = 39.47841760435743 
 c = 63239.7263 #Au/yr
 r1= 6.32397263E12 #AU
 
 
 #Integration Loop
-
 def integrator(planets,sun,planets_index):
 
     def gravity_on_planet(x_sun,y_sun,x_planet,y_planet,index):
