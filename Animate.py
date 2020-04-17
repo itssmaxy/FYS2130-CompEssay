@@ -9,9 +9,11 @@ dict = {}
 Define objects first by weight and then radius, First Solarmass and then radius
 """
 dict['bh'] = [1,5.91824521E-7]#Solarmass and AU
-dict['earth'] = [0.000003003,4.26354*1E-5]
+dict['ns'] = [1.4,1.00268807*1E-7]
+dict['sun'] = [1,0.0046524726]
+dict['rg'] = [0.8,0.46524726]
 print('Please choose from the following:')
-print('bh --- earth ----')
+print('bh (Black Hole) --- sun --- ns (Neutron Star)---rg (Red Giant)')
 object1 = input('Object 1:')
 object2 = input('Object 2:')
 sunmass = dict[object1][0]
@@ -98,7 +100,7 @@ def integrator(planets,sun,planets_index):
         h[i+1] = h_stretch(r1,omega,R,t)
 
 
-        if R < 1000*(radius_1+radius_2):
+        if R < 1e3*(radius_1+radius_2):
             print('The objects have collided!')
             break
 
@@ -113,6 +115,9 @@ def h_stretch(r,omega,R,t):
 #Input index of planets wanted in simulation
 planets_index = [0]
 dist = 1
+if 1e3*(radius_1 +radius_2)>1:
+    dist= 1e3*(radius_1 +radius_2)
+
 
 """
 Collision or orbit computing
@@ -155,7 +160,7 @@ ax1.legend(loc='lower right')
 
 
 #plt.savefig("garvity-sun-pos.jpeg")
-ax2.plot(np.linspace(0,t,len(h)),h)
+ax2.plot(np.linspace(0,t,count),h[:count])
 ax2.set(xlabel=('Time(y)'),ylabel=('Distortion(Au)'))
 plt.show() #viser banen til objektene
 
@@ -170,8 +175,8 @@ fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
 ax2.set(xlim=(-dist,dist),ylim=(-dist,dist))
 line1, = ax1.plot(np.linspace(0,10,intr), h[0:int(intr)], lw=2)
-line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1])
-line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1])
+line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1)
+line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2)
 
 # initialization function: plot the background of each frame
 def init1():
@@ -209,4 +214,5 @@ anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
                                frames=int(N/intr), interval=150, blit=True)
 anim2 = animation.FuncAnimation(fig, update, init_func=init3,
                                frames=int(N/intr), fargs=[line2, line3], interval=150, blit=True)
+plt.legend()
 plt.show()
