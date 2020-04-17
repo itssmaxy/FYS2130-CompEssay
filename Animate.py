@@ -7,10 +7,12 @@ dict = {}
 """
 Define objects first by weight and then radius, First Solarmass and then radius
 """
-dict['bh'] = [30,5.91824521E-7]#Solarmass and AU
-dict['earth'] = [0.000003003,4.26354*1E-5]
+dict['bh'] = [1,5.91824521E-7]#Solarmass and AU
+dict['ns'] = [1.4,1.00268807*1E-7]
+dict['sun'] = [1,0.0046524726]
+dict['rg'] = [0.8,0.46524726]
 print('Please choose from the following:')
-print('bh --- earth ----')
+print('bh (Black Hole) --- sun --- ns (Neutron Star)---rg (Red Giant)')
 object1 = input('Object 1:')
 object2 = input('Object 2:')
 sunmass = dict[object1][0]
@@ -40,7 +42,7 @@ def integrator(planets,sun,planets_index):
 
 
     time = float(input("Choose simulation time in yrs: "))
-    dt = 0.0001
+    dt = 0.00001
     N = int(time/dt)
 
     t = dt
@@ -95,13 +97,13 @@ def integrator(planets,sun,planets_index):
 
         h[i+1] = h_stretch(r1,omega,R,t)
 
-
-        if R < (radius_1+radius_2):
+        if np.linalg.norm(v_planets[0])>100:
+            print('THE OBJECTS HAVE COLLIDED!')
             break
 
         count +=1
         #i += 1
-    return x_planets,x_sun, count, h, t,N
+    return x_planets,x_sun, count, h, t,N ,dt
 
 
 def h_stretch(r,omega,R,t):
@@ -109,31 +111,73 @@ def h_stretch(r,omega,R,t):
 
 #Input index of planets wanted in simulation
 planets_index = [0]
-r = 2
+dist = 1
+if 5*(radius_1 +radius_2)>1:
+    dist= 1e1*(radius_1 +radius_2)
+
 
 """
 Collision or orbit computing
 """
 answer= input("If you want to collide press 'c'. If you want to orbit press 'o'")
-hyp = np.asarray([-r,0])
+hyp = np.asarray([-dist,0])
 tan_vec = np.asarray([-hyp[1]/np.linalg.norm(hyp),\
 hyp[0]/np.linalg.norm(hyp)])
 vel = np.sqrt(Gr*mass_plan1*sunmass/np.linalg.norm(hyp))
 v_orbit = vel*tan_vec
-v_colide = v_orbit*0.5 + vel*np.asarray([-0.5,0])
+v_colide = v_orbit*0.3 + vel*np.asarray([-0.7,0])
+
 if answer == 'c':
-    planet_1 = np.asarray([[r,0,v_colide[0],v_colide[1]]])
+    planet_1 = np.asarray([[dist,0,v_colide[0],v_colide[1]]])
     planet_2 = np.asarray([0,0,0,0])
 elif answer == 'o':
-    planet_1 = np.asarray([[r,0,v_orbit[0],v_orbit[1]]])
+    planet_1 = np.asarray([[dist,0,v_orbit[0],v_orbit[1]]])
     planet_2 = np.asarray([0,0,0,0])
 
+
+planet_orbit, sun_orbit, count, h, t,N, dt = integrator(planet_1,planet_2,planets_index)
+
+
+
+#Fourier Transform
+
+
+def MonsieurFourier(h,dt):
+    n_Size = h.size
+    dt = dt
+    FourierTransform = np.fft.fft(h)
+    Sample_Frequency = np.fft.fftfreq(n_Size, d= dt)
+
+    plt.plot(Sample_Frequency, np.abs(FourierTransform),label="Fourier Analysis")
+    plt.legend()
+    plt.show()
+
+<<<<<<< HEAD
+print("Do you wish to do a Fourier analysis? (y,n)")
+ans = input("Answer: ")
+if ans == "y":
+    MonsieurFourier(h,dt)
+elif ans == "n":
+    pass
+
+=======
+def ask():
+    print("Do you wish to do a Fourier analysis? (y,n)")
+    ans = input("Answer: ")
+    if ans == "y":
+        MonsieurFourier(h,dt)
+    elif ans == "n":
+        pass 
+    else:
+        ask()
+ask()
+>>>>>>> 2c7ecd7d8e85abbb3ea49cf683d645108f834e2d
 
 #Final results and plotting
 fig, (ax1,ax2) = plt.subplots(1,2)
-planet_orbit, sun_orbit, count, h, t,N = integrator(planet_1,planet_2,planets_index)
-planet_orbit = planet_orbit[0,:count+1,:]
-sun_orbit = sun_orbit[:count+1,:]
+
+planet_orbit = planet_orbit[0,1:count+1,:]
+sun_orbit = sun_orbit[1:count+1,:]
 
 
 r = np.linalg.norm(planet_orbit[-1,:] - sun_orbit[-1,:])/2
@@ -151,7 +195,7 @@ ax1.legend(loc='lower right')
 
 
 #plt.savefig("garvity-sun-pos.jpeg")
-ax2.plot(np.linspace(0,t,len(h)),h)
+ax2.plot(np.linspace(0,t,count),h[:count])
 ax2.set(xlabel=('Time(y)'),ylabel=('Distortion(Au)'))
 plt.show() #viser banen til objektene
 
@@ -164,10 +208,10 @@ intr = int(1e3)
 # First set up the figure, the axis, and the plot element we want to animate
 fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
-ax2.set(xlim=(-2,2),ylim=(-2,2))
+ax2.set(xlim=(-dist,dist),ylim=(-dist,dist),xlabel='AU',ylabel='AU',title='Objects trajectory')
 line1, = ax1.plot(np.linspace(0,10,intr), h[0:int(intr)], lw=2)
-line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1])
-line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1])
+line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1)
+line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2)
 
 # initialization function: plot the background of each frame
 def init1():
@@ -182,35 +226,28 @@ def animate1(i):
     line1.set_data(x, y)
     return line1,
 
-def init2():
-    line2.set_data([], [])
-    return line2,
+# New artists and updater for the spinning bodies
+# Renders two object artists via the same renderer
 
-# animation function.  This is called sequentially
-def animate2(i):
-    #x = np.linspace(int(i*t/(1e2)),int((i+1)*t/(1e2)), 1e2)
-    x = planet_orbit[int(i*intr):int((i+1)*intr),0]
-    y = planet_orbit[int(i*intr):int((i+1)*intr),1]
-    line2.set_data(x, y)
-    return line2,
 
 def init3():
     line3.set_data([], [])
-    return line3,
+    line2.set_data([],[])
+    return line3,line2
 
-# animation function.  This is called sequentially
-def animate3(i):
-    #x = np.linspace(int(i*t/(1e2)),int((i+1)*t/(1e2)), 1e2)
+def update(i, line2, line3):
+    x = planet_orbit[int(i*intr):int((i+1)*intr),0]
+    y = planet_orbit[int(i*intr):int((i+1)*intr),1]
+    line2.set_data(x, y)
     x = sun_orbit[int(i*intr):int((i+1)*intr),0]
     y = sun_orbit[int(i*intr):int((i+1)*intr),1]
     line3.set_data(x, y)
-    return line3,
+    return [line2,line3]
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
-                               frames=int(N/intr), interval=100, blit=True)
-anim2 = animation.FuncAnimation(fig, animate2, init_func=init2,
-                               frames=int(N/intr), interval=100, blit=True)
-anim3 = animation.FuncAnimation(fig, animate3, init_func=init3,
-                               frames=int(N/intr), interval=100, blit=True)
+                               frames=int(N/intr), interval=150, blit=True)
+anim2 = animation.FuncAnimation(fig, update, init_func=init3,
+                               frames=int(N/intr), fargs=[line2, line3], interval=150, blit=True)
+plt.legend()
 plt.show()
