@@ -8,9 +8,9 @@ dict = {}
 Define objects first by weight and then radius, First Solarmass and then radius
 """
 dict['bh'] = [1,5.91824521E-7]#Solarmass and AU
-dict['ns'] = [1.4,1.00268807*1E-7]
-dict['sun'] = [1,0.0046524726]
-dict['rg'] = [0.8,0.46524726]
+dict['ns'] = [1.4,1.00268807*1E-7] #Neutral Star
+dict['sun'] = [1,0.0046524726] # Sun
+dict['rg'] = [0.8,0.46524726] #Red Giant
 print('Please choose from the following:')
 print('bh (Black Hole) --- sun --- ns (Neutron Star)---rg (Red Giant)')
 object1 = input('Object 1:')
@@ -144,7 +144,7 @@ def MonsieurFourier(h,dt):
     dt = dt
     FourierTransform = np.fft.fft(h)
     Sample_Frequency = np.fft.fftfreq(n_Size, d= dt)
-
+    
     plt.plot(Sample_Frequency, np.abs(FourierTransform),label="Fourier Analysis")
     plt.legend()
     plt.show()
