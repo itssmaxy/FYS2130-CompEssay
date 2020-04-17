@@ -24,7 +24,7 @@ radius_2 = dict[object2][1]#0.00005267828
 
 Gr = 39.47841760435743
 c = 63239.7263 #Au/yr
-r1= 6.32397263E12 #AU Distance from the objects where we detect the distortion/wave. 
+r1= 6.32397263E12 #AU Distance from the objects where we detect the distortion/wave.
 
 Sampling = int(1E5)
 
@@ -107,7 +107,7 @@ def integrator(planets,sun,planets_index):
             print('THE OBJECTS HAVE COLLIDED!')
             break
         count +=1
-        
+
     return x_planets,x_sun, count, h, t,N ,dt
 
 
@@ -180,7 +180,7 @@ print("Energi radiert = {}".format(P))
 
 
 
-ax1.plot(planet_orbit[:-1,0], planet_orbit[:-1,1], "b--",label=object1)
+ax1.plot(planet_orbit[:-1,0], planet_orbit[:-1,1], "--",label=object1)
 ax1.plot(sun_orbit[:-1,0], sun_orbit[:-1,1],"--", label=object2)
 ax1.set(xlabel=("x-position (AU)"),ylabel= ("y-position (AU)"))
 ax1.legend(loc='lower right')
@@ -195,16 +195,18 @@ plt.show() #viser banen til objektene
 """
 Animation kode
 """
+rat = 0.4
+if object1 == 'bbh' or object2 == 'bbh':
+    ret = 1
 
-rat = 1
 intr = int(1e3)
 # First set up the figure, the axis, and the plot element we want to animate
 fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
 ax2.set(xlim=(-rat*dist,rat*dist),ylim=(-rat*dist,rat*dist),xlabel='AU',ylabel='AU',title='Objects trajectory')
 line1, = ax1.plot(np.linspace(0,10,intr), h[0:int(intr)], lw=2)
-line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1)
-line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2)
+line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1,color=dict[object1][2])
+line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2,color=dict[object2][2])
 patch1 = plt.Circle((planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1]), radius_1,color=dict[object1][2])
 patch2 = plt.Circle((sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1]), radius_2,color=dict[object2][2])
 
