@@ -111,13 +111,13 @@ def h_stretch(r,omega,R,t):
 
 #Input index of planets wanted in simulation
 planets_index = [0]
-r = 1
+dist = 1
 
 """
 Collision or orbit computing
 """
 answer= input("If you want to collide press 'c'. If you want to orbit press 'o'")
-hyp = np.asarray([-r,0])
+hyp = np.asarray([-dist,0])
 tan_vec = np.asarray([-hyp[1]/np.linalg.norm(hyp),\
 hyp[0]/np.linalg.norm(hyp)])
 vel = np.sqrt(Gr*mass_plan1*sunmass/np.linalg.norm(hyp))
@@ -125,10 +125,10 @@ v_orbit = vel*tan_vec
 v_colide = v_orbit*0.5 + vel*np.asarray([-0.5,0])
 
 if answer == 'c':
-    planet_1 = np.asarray([[r,0,v_colide[0],v_colide[1]]])
+    planet_1 = np.asarray([[dist,0,v_colide[0],v_colide[1]]])
     planet_2 = np.asarray([0,0,0,0])
 elif answer == 'o':
-    planet_1 = np.asarray([[r,0,v_orbit[0],v_orbit[1]]])
+    planet_1 = np.asarray([[dist,0,v_orbit[0],v_orbit[1]]])
     planet_2 = np.asarray([0,0,0,0])
 
 
@@ -167,7 +167,7 @@ intr = int(1e3)
 # First set up the figure, the axis, and the plot element we want to animate
 fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
-ax2.set(xlim=(-2,2),ylim=(-2,2))
+ax2.set(xlim=(-dist-radius_1 - radius_2,dist+radius_1 + radius_2),ylim=(-dist-radius_1 - radius_2,dist+radius_1 + radius_2))
 line1, = ax1.plot(np.linspace(0,10,intr), h[0:int(intr)], lw=2)
 line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1])
 line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1])
@@ -187,13 +187,12 @@ def animate1(i):
 
 # New artists and updater for the spinning bodies
 # Renders two object artists via the same renderer
-def init2():
-    line2.set_data([], [])
-    return line2,
+
 
 def init3():
     line3.set_data([], [])
-    return line3,
+    line2.set_data([],[])
+    return line3,line2
 
 def update(i, line2, line3):
     x = planet_orbit[int(i*intr):int((i+1)*intr),0]
@@ -207,6 +206,6 @@ def update(i, line2, line3):
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
                                frames=int(N/intr), interval=100, blit=True)
-anim2 = animation.FuncAnimation(fig, update, init_func=init2,
+anim2 = animation.FuncAnimation(fig, update, init_func=init3,
                                frames=int(N/intr), fargs=[line2, line3], interval=100, blit=True)
 plt.show()
