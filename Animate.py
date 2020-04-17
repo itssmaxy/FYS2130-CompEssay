@@ -114,8 +114,8 @@ def h_stretch(r,omega,R,t):
 #Input index of planets wanted in simulation
 planets_index = [0]
 dist = 1
-if 1e3*(radius_1 +radius_2)>1:
-    dist= 1e3*(radius_1 +radius_2)
+if 5*(radius_1 +radius_2)>1:
+    dist= 1e1*(radius_1 +radius_2)
 
 
 """
@@ -159,7 +159,7 @@ ans = input("Answer: ")
 if ans == "y":
     MonsieurFourier(h,dt)
 elif ans == "n":
-    pass 
+    pass
 
 
 #Final results and plotting
