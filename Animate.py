@@ -136,8 +136,8 @@ elif answer == 'o':
 #Final results and plotting
 fig, (ax1,ax2) = plt.subplots(1,2)
 planet_orbit, sun_orbit, count, h, t,N = integrator(planet_1,planet_2,planets_index)
-planet_orbit = planet_orbit[0,:count+1,:]
-sun_orbit = sun_orbit[:count+1,:]
+planet_orbit = planet_orbit[0,1:count+1,:]
+sun_orbit = sun_orbit[1:count+1,:]
 
 
 r = np.linalg.norm(planet_orbit[-1,:] - sun_orbit[-1,:])/2
