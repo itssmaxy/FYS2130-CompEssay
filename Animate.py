@@ -99,9 +99,8 @@ def integrator(planets,sun,planets_index):
 
         h[i+1] = h_stretch(r1,omega,R,t)
 
-
-        if R < 1e3*(radius_1+radius_2):
-            print('The objects have collided!')
+        if np.linalg.norm(v_planets[0])>100:
+            print('THE OBJECTS HAVE COLLIDED!')
             break
 
         count +=1
