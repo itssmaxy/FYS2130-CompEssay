@@ -102,7 +102,9 @@ def integrator(planets,sun,planets_index):
         if np.linalg.norm(v_planets[0])>100:
             print('THE OBJECTS HAVE COLLIDED!')
             break
-
+        if R<(radius_1+radius_2):
+            print('THE OBJECTS HAVE COLLIDED!')
+            break
         count +=1
         #i += 1
     return x_planets,x_sun, count, h, t,N ,dt
@@ -142,11 +144,11 @@ planet_orbit, sun_orbit, count, h, t,N, dt = integrator(planet_1,planet_2,planet
 #Fourier Transform
 
 def MonsieurFourier(h,dt,t):
-    
+
     dt = dt
     FourierTransform = np.fft.fft(h)
     Sample_Frequency = np.linspace(0,1/(2*t), Sampling//2)
-    
+
     plt.plot(Sample_Frequency, 2/Sampling*np.abs(FourierTransform[:Sampling//2]),label="Fourier Analysis")
     plt.legend()
     plt.show()
@@ -241,8 +243,8 @@ def update(i, line2, line3,patch1,patch2):
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
-                               frames=int(N/intr), interval=150, blit=True)
+                               frames=int(count/intr), interval=150, blit=True)
 anim2 = animation.FuncAnimation(fig, update, init_func=init3,
-                               frames=int(N/intr), fargs=[line2, line3,patch1,patch2], interval=150, blit=True)
+                               frames=int(count/intr), fargs=[line2, line3,patch1,patch2], interval=150, blit=True)
 plt.legend()
 plt.show()
