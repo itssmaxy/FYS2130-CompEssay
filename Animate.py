@@ -158,7 +158,7 @@ def ask():
     print("Do you wish to do a Fourier analysis? (y,n)")
     ans = input("Answer: ")
     if ans == "y":
-        MonsieurFourier(h,dt,t)
+        MonsieurFourier(h[:count+1],dt,t)
     elif ans == "n":
         pass
     else:
@@ -168,41 +168,53 @@ ask()
 # Wavelet Analasys
 
 
-def Wavelet_Transform(h, fs, N, Func, w_a, K):
+def Wavelet_Transform(sp, w, h, fs, N, Func, w_a, K):
     """
     runs a specific wavelet through the signal
     """
 
-    sp = np.fft.fft(h)
-    w = np.fft.fftfreq(Func.size, 1/fs)
-    w = np.linspace(0, fs, N)*2*np.pi
+    #sp = np.fft.fft(h)
+    #w = np.fft.fftfreq(Func.size, 1/fs)
+    #w = np.linspace(0, fs, N)*2*np.pi
     wavelet = 2*(np.exp(-(K*(w-w_a)/w_a)**2) - np.exp(-K**2)*np.exp(-(K*w/w_a)**2))
     
     return np.fft.ifft(sp*wavelet)
 
-def Wavelet_diagram(h, t):
+def Wavelet_diagram(h, t, Sampling):
     """
     Runs Wavelet_Transform for all wavelets across the signal and compiles them into one diagram
     """
-    N = len(h)
-    fs = np.linspace(0,1/(2*t), Sampling//2)
+    N = h.size
+    fs = Sampling
     Func = np.linspace(0, N/fs, N)
-    K = 12
-    omega_a = np.arange(0, 2000)*2*np.pi
-    
+    K = 8
+    Run = 50000
+    omega_a = np.arange(500, Run)*2*np.pi
+    sp = np.fft.fft(h)
+    w = np.linspace(0, fs, N)*2*np.pi
     wavelet_stuff = np.zeros((len(omega_a), len(Func)))
     for i in range(len(omega_a)):
-        wavelet_stuff[i,:] = np.abs(wavelet_transform(h, fs, N, Func, omega_a[i], K))
-            
+        wavelet_stuff[i,:] = np.abs(Wavelet_Transform(sp, w, h, fs, N, Func, omega_a[i], K))
+        print("Running: % ", (i/len(omega_a))*100)
+    print("DONE!")        
     #return wavelet_stuff
     X, Y = np.meshgrid(Func, omega_a/(2*np.pi))
     plt.title("Wavelet Analasys")
     plt.contourf(X, Y, wavelet_stuff,)
     plt.ylabel("Frekvens ['Hz']")
     plt.xlabel("tid")
-    plt.plot
+    plt.show()
 
-
+def ask2():
+    print("Do you wish to do Wavelet analysis? (y,n)")
+    ans = input("Answer: ")
+    if ans == "y":
+        Wavelet_diagram(h[:(count+1000)], t, Sampling)
+    elif ans == "n":
+        pass
+    else:
+        ask2()
+ask2()
 
 
 
