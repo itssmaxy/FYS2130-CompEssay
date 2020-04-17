@@ -188,16 +188,17 @@ def Wavelet_diagram(h, t, Sampling):
     fs = Sampling
     Func = np.linspace(0, N/fs, N)
     K = 8
-    Run = 50000
-    omega_a = np.arange(500, Run)*2*np.pi
+    Run = 6000
+    omega_a = np.arange(200, Run)*2*np.pi
     sp = np.fft.fft(h)
     w = np.linspace(0, fs, N)*2*np.pi
     wavelet_stuff = np.zeros((len(omega_a), len(Func)))
+    print("Running Wavelet analasys!")
     for i in range(len(omega_a)):
         wavelet_stuff[i,:] = np.abs(Wavelet_Transform(sp, w, h, fs, N, Func, omega_a[i], K))
-        print("Running: % ", (i/len(omega_a))*100)
+        #print("Running: % ", (i/len(omega_a))*100)
     print("DONE!")        
-    #return wavelet_stuff
+    
     X, Y = np.meshgrid(Func, omega_a/(2*np.pi))
     plt.title("Wavelet Analasys")
     plt.contourf(X, Y, wavelet_stuff,)
