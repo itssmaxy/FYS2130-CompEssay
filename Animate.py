@@ -25,6 +25,8 @@ Gr = 39.47841760435743
 c = 63239.7263 #Au/yr
 r1= 6.32397263E12 #AU
 
+Sampling = int(1E5)
+
 
 #Integration Loop
 def integrator(planets,sun,planets_index):
@@ -139,13 +141,19 @@ planet_orbit, sun_orbit, count, h, t,N, dt = integrator(planet_1,planet_2,planet
 
 #Fourier Transform
 
-def MonsieurFourier(h,dt):
+def MonsieurFourier(h,dt,t):
     n_Size = h.size
     dt = dt
     FourierTransform = np.fft.fft(h)
+<<<<<<< HEAD
+    Sample_Frequency = np.linspace(0,1/(2*t), Sampling//2)
+    
+    plt.plot(Sample_Frequency, 2/Sampling*np.abs(FourierTransform[:Sampling//2]),label="Fourier Analysis")
+=======
     Sample_Frequency = np.fft.fftfreq(n_Size, d= dt)
 
     plt.plot(Sample_Frequency, np.abs(FourierTransform),label="Fourier Analysis")
+>>>>>>> b5154a27d8f56c31c44595494cf64be51864a403
     plt.legend()
     plt.show()
 
@@ -153,7 +161,7 @@ def ask():
     print("Do you wish to do a Fourier analysis? (y,n)")
     ans = input("Answer: ")
     if ans == "y":
-        MonsieurFourier(h,dt)
+        MonsieurFourier(h,dt,t)
     elif ans == "n":
         pass
     else:
