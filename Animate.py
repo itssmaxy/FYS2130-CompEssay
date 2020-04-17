@@ -165,6 +165,48 @@ def ask():
         ask()
 ask()
 
+# Wavelet Analasys
+
+
+def Wavelet_Transform(h, fs, N, Func, w_a, K):
+    """
+    runs a specific wavelet through the signal
+    """
+
+    sp = np.fft.fft(h)
+    w = np.fft.fftfreq(Func.size, 1/fs)
+    w = np.linspace(0, fs, N)*2*np.pi
+    wavelet = 2*(np.exp(-(K*(w-w_a)/w_a)**2) - np.exp(-K**2)*np.exp(-(K*w/w_a)**2))
+    
+    return np.fft.ifft(sp*wavelet)
+
+def Wavelet_diagram(h, t):
+    """
+    Runs Wavelet_Transform for all wavelets across the signal and compiles them into one diagram
+    """
+    N = len(h)
+    fs = np.linspace(0,1/(2*t), Sampling//2)
+    Func = np.linspace(0, N/fs, N)
+    K = 12
+    omega_a = np.arange(0, 2000)*2*np.pi
+    
+    wavelet_stuff = np.zeros((len(omega_a), len(Func)))
+    for i in range(len(omega_a)):
+        wavelet_stuff[i,:] = np.abs(wavelet_transform(h, fs, N, Func, omega_a[i], K))
+            
+    #return wavelet_stuff
+    X, Y = np.meshgrid(Func, omega_a/(2*np.pi))
+    plt.title("Wavelet Analasys")
+    plt.contourf(X, Y, wavelet_stuff,)
+    plt.ylabel("Frekvens ['Hz']")
+    plt.xlabel("tid")
+    plt.plot
+
+
+
+
+
+
 
 #Final results and plotting
 fig, (ax1,ax2) = plt.subplots(1,2)
