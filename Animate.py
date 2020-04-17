@@ -155,12 +155,6 @@ def MonsieurFourier(h,dt):
     plt.show()
 
 
-print("Do you wish to do a Fourier analysis? (y,n)")
-ans = input("Answer: ")
-if ans == "y":
-    MonsieurFourier(h,dt)
-elif ans == "n":
-    pass
 
 
 def ask():
