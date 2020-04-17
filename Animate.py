@@ -142,7 +142,7 @@ planet_orbit, sun_orbit, count, h, t,N, dt = integrator(planet_1,planet_2,planet
 #Fourier Transform
 
 def MonsieurFourier(h,dt,t):
-    n_Size = h.size
+    
     dt = dt
     FourierTransform = np.fft.fft(h)
     Sample_Frequency = np.linspace(0,1/(2*t), Sampling//2)
