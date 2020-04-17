@@ -21,7 +21,7 @@ mass_plan1 = dict[object2][0]
 radius_1 = dict[object1][1]#0.00005267828
 radius_2 = dict[object2][1]#0.00005267828
 
-Gr = 39.47841760435743 
+Gr = 39.47841760435743
 c = 63239.7263 #Au/yr
 r1= 6.32397263E12 #AU
 
@@ -137,10 +137,7 @@ elif answer == 'o':
 
 planet_orbit, sun_orbit, count, h, t,N, dt = integrator(planet_1,planet_2,planets_index)
 
-
-
 #Fourier Transform
-
 
 def MonsieurFourier(h,dt):
     n_Size = h.size
@@ -151,9 +148,6 @@ def MonsieurFourier(h,dt):
     plt.plot(Sample_Frequency, np.abs(FourierTransform),label="Fourier Analysis")
     plt.legend()
     plt.show()
-
-
-
 
 def ask():
     print("Do you wish to do a Fourier analysis? (y,n)")
