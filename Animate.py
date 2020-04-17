@@ -7,7 +7,7 @@ dict = {}
 """
 Define objects first by weight and then radius, First Solarmass and then radius
 """
-dict['bh'] = [1,5.91824521E-7]#Solarmass and AU
+dict['bh'] = [1,5.91824521E-7]#BlackHole
 dict['ns'] = [1.4,1.00268807*1E-7] #Neutral Star
 dict['sun'] = [1,0.0046524726] # Sun
 dict['rg'] = [0.8,0.46524726] #Red Giant
