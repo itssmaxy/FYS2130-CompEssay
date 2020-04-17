@@ -154,13 +154,16 @@ def MonsieurFourier(h,dt):
     plt.legend()
     plt.show()
 
-print("Do you wish to do a Fourier analysis? (y,n)")
-ans = input("Answer: ")
-if ans == "y":
-    MonsieurFourier(h,dt)
-elif ans == "n":
-    pass 
-
+def ask():
+    print("Do you wish to do a Fourier analysis? (y,n)")
+    ans = input("Answer: ")
+    if ans == "y":
+        MonsieurFourier(h,dt)
+    elif ans == "n":
+        pass 
+    else:
+        ask()
+ask()
 
 #Final results and plotting
 fig, (ax1,ax2) = plt.subplots(1,2)
