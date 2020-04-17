@@ -145,15 +145,9 @@ def MonsieurFourier(h,dt,t):
     n_Size = h.size
     dt = dt
     FourierTransform = np.fft.fft(h)
-<<<<<<< HEAD
     Sample_Frequency = np.linspace(0,1/(2*t), Sampling//2)
     
     plt.plot(Sample_Frequency, 2/Sampling*np.abs(FourierTransform[:Sampling//2]),label="Fourier Analysis")
-=======
-    Sample_Frequency = np.fft.fftfreq(n_Size, d= dt)
-
-    plt.plot(Sample_Frequency, np.abs(FourierTransform),label="Fourier Analysis")
->>>>>>> b5154a27d8f56c31c44595494cf64be51864a403
     plt.legend()
     plt.show()
 
