@@ -23,7 +23,7 @@ radius_2 = dict[object2][1]#0.00005267828
 
 Gr = 39.47841760435743
 c = 63239.7263 #Au/yr
-r1= 6.32397263E12 #AU
+r1= 6.32397263E12 #AU Distance from the objects where we detect the distortion/wave. 
 
 Sampling = int(1E5)
 
