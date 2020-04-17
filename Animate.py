@@ -106,7 +106,7 @@ def integrator(planets,sun,planets_index):
             print('THE OBJECTS HAVE COLLIDED!')
             break
         count +=1
-        #i += 1
+        
     return x_planets,x_sun, count, h, t,N ,dt
 
 
@@ -177,7 +177,7 @@ print("Distanse is = {} AU".format(r))
 P = -32/5*Gr**4/c**5*((sunmass*mass_plan1)**2*(sunmass + mass_plan1))/r**5
 print("Energi radiert = {}".format(P))
 
-#for i in range(len(planets_index)):
+
 
 ax1.plot(planet_orbit[:-1,0], planet_orbit[:-1,1], "b--",label=object1)
 ax1.plot(sun_orbit[:-1,0], sun_orbit[:-1,1],"--", label=object2)
@@ -185,7 +185,7 @@ ax1.set(xlabel=("x-position (AU)"),ylabel= ("y-position (AU)"))
 ax1.legend(loc='lower right')
 
 
-
+#If you wish to savefig, un-comment the line below
 #plt.savefig("garvity-sun-pos.jpeg")
 ax2.plot(np.linspace(0,t,count),h[:count])
 ax2.set(xlabel=('Time(y)'),ylabel=('Distortion(Au)'))
@@ -206,6 +206,7 @@ line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=
 line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2)
 patch1 = plt.Circle((planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1]), radius_1,color=dict[object1][2])
 patch2 = plt.Circle((sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1]), radius_2,color=dict[object2][2])
+
 # initialization function: plot the background of each frame
 def init1():
     line1.set_data([], [])
