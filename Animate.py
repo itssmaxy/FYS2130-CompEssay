@@ -106,7 +106,7 @@ def integrator(planets,sun,planets_index):
 
         count +=1
         #i += 1
-    return x_planets,x_sun, count, h, t,N
+    return x_planets,x_sun, count, h, t,N ,dt
 
 
 def h_stretch(r,omega,R,t):
@@ -138,9 +138,34 @@ elif answer == 'o':
     planet_2 = np.asarray([0,0,0,0])
 
 
+planet_orbit, sun_orbit, count, h, t,N, dt = integrator(planet_1,planet_2,planets_index)
+
+
+
+#Fourier Transform
+
+
+def MonsieurFourier(h,dt):
+    n_Size = h.size
+    dt = dt
+    FourierTransform = np.fft.fft(h)
+    Sample_Frequency = np.fft.fftfreq(n_Size, d= dt)
+
+    plt.plot(Sample_Frequency, np.abs(FourierTransform),label="Fourier Analysis")
+    plt.legend()
+    plt.show()
+
+print("Do you wish to do a Fourier analysis? (y,n)")
+ans = input("Answer: ")
+if ans == "y":
+    MonsieurFourier(h,dt)
+elif ans == "n":
+    pass 
+
+
 #Final results and plotting
 fig, (ax1,ax2) = plt.subplots(1,2)
-planet_orbit, sun_orbit, count, h, t,N = integrator(planet_1,planet_2,planets_index)
+
 planet_orbit = planet_orbit[0,1:count+1,:]
 sun_orbit = sun_orbit[1:count+1,:]
 
