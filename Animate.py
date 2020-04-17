@@ -8,15 +8,16 @@ dict = {}
 Define objects first by weight and then radius, First Solarmass and then radius
 """
 dict['bh'] = [1,5.91824521E-7,'k']#BlackHole
+dict['bbh'] = [30,5.924*1e-7,'k']
 dict['ns'] = [1.4,1.00268807*1E-7,'w'] #Neutral Star
 dict['sun'] = [1,0.0046524726,'y'] # Sun
 dict['rg'] = [0.8,0.46524726,'r'] #Red Giant
 print('Please choose from the following:')
-print('bh (Black Hole) --- sun --- ns (Neutron Star)---rg (Red Giant)')
+print('bh (Black Hole)---bbh (Big Black Hole) --- sun --- ns (Neutron Star)---rg (Red Giant)')
 object1 = input('Object 1:')
 object2 = input('Object 2:')
-sunmass = dict[object1][0]
-mass_plan1 = dict[object2][0]
+sunmass = dict[object2][0]
+mass_plan1 = dict[object1][0]
 
 radius_1 = dict[object1][1]#0.00005267828
 radius_2 = dict[object2][1]#0.00005267828
@@ -195,12 +196,12 @@ plt.show() #viser banen til objektene
 Animation kode
 """
 
-
+rat = 1
 intr = int(1e3)
 # First set up the figure, the axis, and the plot element we want to animate
 fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
-ax2.set(xlim=(-dist,dist),ylim=(-dist,dist),xlabel='AU',ylabel='AU',title='Objects trajectory')
+ax2.set(xlim=(-rat*dist,rat*dist),ylim=(-rat*dist,rat*dist),xlabel='AU',ylabel='AU',title='Objects trajectory')
 line1, = ax1.plot(np.linspace(0,10,intr), h[0:int(intr)], lw=2)
 line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1)
 line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2)
