@@ -188,7 +188,7 @@ def Wavelet_diagram(h, t, Sampling):
     fs = Sampling
     Func = np.linspace(0, N/fs, N)
     K = 8
-    Run = 5000#6000
+    Run = 6000#6000
     omega_a = np.arange(200, Run)*2*np.pi
     sp = np.fft.fft(h)
     w = np.linspace(0, fs, N)*2*np.pi
