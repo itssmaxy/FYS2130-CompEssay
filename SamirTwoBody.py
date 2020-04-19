@@ -1,29 +1,32 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import sys
+#from progress.bar import ChargingBar
 from matplotlib import animation
 
 dict = {}
 """
 Define objects first by weight and then radius, First Solarmass and then radius
 """
-dict['bh'] = [1,5.91824521E-7]#BlackHole
-dict['ns'] = [1.4,1.00268807*1E-7] #Neutral Star
-dict['sun'] = [1,0.0046524726] #Sun
-dict['rg'] = [0.8,0.46524726] #Red Giant
+dict['bh'] = [1,5.91824521E-7,'k']#BlackHole
+dict['bbh'] = [30,5.924*1e-7,'k']
+dict['ns'] = [1.4,1.00268807*1E-7,'w'] #Neutral Star
+dict['sun'] = [1,0.0046524726,'y'] # Sun
+dict['rg'] = [0.8,0.46524726,'r'] #Red Gianta
 print('Please choose from the following:')
-print('bh (Black Hole) --- sun --- ns (Neutron Star)---rg (Red Giant)')
+print('bh (Black Hole)---bbh (Big Black Hole) --- sun --- ns (Neutron Star)---rg (Red Giant)')
 object1 = input('Object 1:')
 object2 = input('Object 2:')
-sunmass = dict[object1][0]
-mass_plan1 = dict[object2][0]
+sunmass = dict[object2][0]
+mass_plan1 = dict[object1][0]
 
 radius_1 = dict[object1][1]#0.00005267828
 radius_2 = dict[object2][1]#0.00005267828
 
-Gr = 39.47841760435743 
+Gr = 39.47841760435743
 c = 63239.7263 #Au/yr
-r1= 6.32397263E12 #AU
+r1= 6.32397263E12 #AU Distance from the objects where we detect the distortion/wave.
+
+Sampling = int(1E5)
 
 
 #Integration Loop
@@ -100,9 +103,11 @@ def integrator(planets,sun,planets_index):
         if np.linalg.norm(v_planets[0])>100:
             print('THE OBJECTS HAVE COLLIDED!')
             break
-
+        if R<(radius_1+radius_2):
+            print('THE OBJECTS HAVE COLLIDED!')
+            break
         count +=1
-        #i += 1
+
     return x_planets,x_sun, count, h, t,N ,dt
 
 
@@ -137,34 +142,88 @@ elif answer == 'o':
 
 planet_orbit, sun_orbit, count, h, t,N, dt = integrator(planet_1,planet_2,planets_index)
 
-
-
 #Fourier Transform
 
+def MonsieurFourier(h,dt,t):
 
-def MonsieurFourier(h,dt):
-    n_Size = h.size
     dt = dt
     FourierTransform = np.fft.fft(h)
-    Sample_Frequency = np.fft.fftfreq(n_Size, d= dt)
-    
-    plt.plot(Sample_Frequency, np.abs(FourierTransform),label="Fourier Analysis")
+    Sample_Frequency = np.linspace(0,1/(2*t), Sampling//2)
+
+    plt.plot(Sample_Frequency, 2/Sampling*np.abs(FourierTransform[:Sampling//2]),label="Fourier Analysis")
     plt.legend()
     plt.show()
-
-
-
 
 def ask():
     print("Do you wish to do a Fourier analysis? (y,n)")
     ans = input("Answer: ")
     if ans == "y":
-        MonsieurFourier(h,dt)
+        MonsieurFourier(h[:count+1],dt,t)
     elif ans == "n":
         pass
     else:
         ask()
 ask()
+
+# Wavelet Analasys
+
+
+def Wavelet_Transform(sp, w, h, fs, N, Func, w_a, K):
+    """
+    runs a specific wavelet through the signal
+    """
+
+    #sp = np.fft.fft(h)
+    #w = np.fft.fftfreq(Func.size, 1/fs)
+    #w = np.linspace(0, fs, N)*2*np.pi
+    wavelet = 2*(np.exp(-(K*(w-w_a)/w_a)**2) - np.exp(-K**2)*np.exp(-(K*w/w_a)**2))
+    
+    return np.fft.ifft(sp*wavelet)
+
+def Wavelet_diagram(h, t, Sampling):
+    """
+    Runs Wavelet_Transform for all wavelets across the signal and compiles them into one diagram
+    """
+    N = h.size
+    fs = Sampling
+    Func = np.linspace(0, N/fs, N)
+    K = 8
+    Run = 5000#6000
+    omega_a = np.arange(200, Run)*2*np.pi
+    sp = np.fft.fft(h)
+    w = np.linspace(0, fs, N)*2*np.pi
+    wavelet_stuff = np.zeros((len(omega_a), len(Func)))
+    print("Running Wavelet analasys!")
+
+    #bar = ChargingBar('Processing', max = len(omega_a))
+
+    for i in range(len(omega_a)):
+        wavelet_stuff[i,:] = np.abs(Wavelet_Transform(sp, w, h, fs, N, Func, omega_a[i], K))
+        print("Running: % ", (i/len(omega_a))*100)
+        #bar.next()
+    #bar.finish()
+    print("DONE!")        
+    
+    X, Y = np.meshgrid(Func, omega_a/(2*np.pi))
+    plt.title("Wavelet Analasys")
+    plt.contourf(X, Y, wavelet_stuff,)
+    plt.ylabel("Frekvens ['Hz']")
+    plt.xlabel("tid")
+    plt.show()
+
+def ask2():
+    print("Do you wish to do Wavelet analysis? (y,n)")
+    ans = input("Answer: ")
+    if ans == "y":
+        Wavelet_diagram(h[:(count+1000)], t, Sampling)
+    elif ans == "n":
+        pass
+    else:
+        ask2()
+ask2()
+
+
+
 
 
 #Final results and plotting
@@ -179,15 +238,15 @@ print("Distanse is = {} AU".format(r))
 P = -32/5*Gr**4/c**5*((sunmass*mass_plan1)**2*(sunmass + mass_plan1))/r**5
 print("Energi radiert = {}".format(P))
 
-#for i in range(len(planets_index)):
 
-ax1.plot(planet_orbit[:-1,0], planet_orbit[:-1,1], "b--",label=object1)
+
+ax1.plot(planet_orbit[:-1,0], planet_orbit[:-1,1], "--",label=object1)
 ax1.plot(sun_orbit[:-1,0], sun_orbit[:-1,1],"--", label=object2)
 ax1.set(xlabel=("x-position (AU)"),ylabel= ("y-position (AU)"))
 ax1.legend(loc='lower right')
 
 
-
+#If you wish to savefig, un-comment the line below
 #plt.savefig("garvity-sun-pos.jpeg")
 ax2.plot(np.linspace(0,t,count),h[:count])
 ax2.set(xlabel=('Time(y)'),ylabel=('Distortion(Au)'))
@@ -196,16 +255,20 @@ plt.show() #viser banen til objektene
 """
 Animation kode
 """
-
+rat = 0.4
+if object1 == 'bbh' or object2 == 'bbh':
+    ret = 1
 
 intr = int(1e3)
 # First set up the figure, the axis, and the plot element we want to animate
 fig, (ax1,ax2) = plt.subplots(1,2)
 ax1.set(xlim=(0,10),ylim=(np.min(h)*1.5,np.max(h)*1.5), ylabel=('Distortion'))
-ax2.set(xlim=(-dist,dist),ylim=(-dist,dist),xlabel='AU',ylabel='AU',title='Objects trajectory')
+ax2.set(xlim=(-rat*dist,rat*dist),ylim=(-rat*dist,rat*dist),xlabel='AU',ylabel='AU',title='Objects trajectory')
 line1, = ax1.plot(np.linspace(0,10,intr), h[0:int(intr)], lw=2)
-line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1)
-line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2)
+line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=object1,color=dict[object1][2])
+line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2,color=dict[object2][2])
+patch1 = plt.Circle((planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1]), radius_1,color=dict[object1][2])
+patch2 = plt.Circle((sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1]), radius_2,color=dict[object2][2])
 
 # initialization function: plot the background of each frame
 def init1():
@@ -229,19 +292,23 @@ def init3():
     line2.set_data([],[])
     return line3,line2
 
-def update(i, line2, line3):
+def update(i, line2, line3,patch1,patch2):
     x = planet_orbit[int(i*intr):int((i+1)*intr),0]
     y = planet_orbit[int(i*intr):int((i+1)*intr),1]
     line2.set_data(x, y)
+    patch1.center= (x[-1],y[-1])
+    ax2.add_patch(patch1)
     x = sun_orbit[int(i*intr):int((i+1)*intr),0]
     y = sun_orbit[int(i*intr):int((i+1)*intr),1]
     line3.set_data(x, y)
-    return [line2,line3]
+    patch2.center= (x[-1],y[-1])
+    ax2.add_patch(patch2)
+    return [line2,line3,patch1,patch2]
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
 anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
-                               frames=int(N/intr), interval=150, blit=True)
+                               frames=int(count/intr), interval=150, blit=True)
 anim2 = animation.FuncAnimation(fig, update, init_func=init3,
-                               frames=int(N/intr), fargs=[line2, line3], interval=150, blit=True)
+                               frames=int(count/intr), fargs=[line2, line3,patch1,patch2], interval=150, blit=True)
 plt.legend()
 plt.show()

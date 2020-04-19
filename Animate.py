@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from progress.bar import ChargingBar
+#from progress.bar import ChargingBar
 from matplotlib import animation
 
 dict = {}
@@ -11,7 +11,7 @@ dict['bh'] = [1,5.91824521E-7,'k']#BlackHole
 dict['bbh'] = [30,5.924*1e-7,'k']
 dict['ns'] = [1.4,1.00268807*1E-7,'w'] #Neutral Star
 dict['sun'] = [1,0.0046524726,'y'] # Sun
-dict['rg'] = [0.8,0.46524726,'r'] #Red Giant
+dict['rg'] = [0.8,0.46524726,'r'] #Red Gianta
 print('Please choose from the following:')
 print('bh (Black Hole)---bbh (Big Black Hole) --- sun --- ns (Neutron Star)---rg (Red Giant)')
 object1 = input('Object 1:')
@@ -195,18 +195,19 @@ def Wavelet_diagram(h, t, Sampling):
     wavelet_stuff = np.zeros((len(omega_a), len(Func)))
     print("Running Wavelet analasys!")
 
-    bar = ChargingBar('Processing', max = len(omega_a))
+    #bar = ChargingBar('Processing', max = len(omega_a))
 
     for i in range(len(omega_a)):
         wavelet_stuff[i,:] = np.abs(Wavelet_Transform(sp, w, h, fs, N, Func, omega_a[i], K))
-        #print("Running: % ", (i/len(omega_a))*100)
-        bar.next()
-    bar.finish()
+        print("Running: % ", (i/len(omega_a))*100)
+        #bar.next()
+    #bar.finish()
     print("DONE!")        
     
     X, Y = np.meshgrid(Func, omega_a/(2*np.pi))
     plt.title("Wavelet Analasys")
     plt.contourf(X, Y, wavelet_stuff,)
+    plt.colorbar()
     plt.ylabel("Frekvens ['Hz']")
     plt.xlabel("tid")
     plt.show()
