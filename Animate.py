@@ -9,7 +9,7 @@ Define objects first by weight and then radius, First Solarmass and then radius
 """
 dict['bh'] = [1,5.91824521E-7,'k']#BlackHole
 dict['bbh'] = [30,5.924*1e-7,'k']
-dict['ns'] = [1.4,1.00268807*1E-7,'w'] #Neutral Star
+dict['ns'] = [1.4,1.00268807*1E-7,'grey'] #Neutral Star
 dict['sun'] = [1,0.0046524726,'y'] # Sun
 dict['rg'] = [0.8,0.46524726,'r'] #Red Gianta
 print('Please choose from the following:')
