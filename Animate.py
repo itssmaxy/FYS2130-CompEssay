@@ -177,7 +177,7 @@ def Wavelet_Transform(sp, w, h, fs, N, Func, w_a, K):
     #w = np.fft.fftfreq(Func.size, 1/fs)
     #w = np.linspace(0, fs, N)*2*np.pi
     wavelet = 2*(np.exp(-(K*(w-w_a)/w_a)**2) - np.exp(-K**2)*np.exp(-(K*w/w_a)**2))
-    
+
     return np.fft.ifft(sp*wavelet)
 
 def Wavelet_diagram(h, t, Sampling):
@@ -202,8 +202,8 @@ def Wavelet_diagram(h, t, Sampling):
         print("Running: % ", (i/len(omega_a))*100)
         #bar.next()
     #bar.finish()
-    print("DONE!")        
-    
+    print("DONE!")
+
     X, Y = np.meshgrid(Func, omega_a/(2*np.pi))
     plt.title("Wavelet Analasys")
     plt.contourf(X, Y, wavelet_stuff,)
@@ -258,7 +258,7 @@ Animation kode
 """
 rat = 0.4
 if object1 == 'bbh' or object2 == 'bbh':
-    ret = 1
+    rat = 2
 
 intr = int(1e3)
 # First set up the figure, the axis, and the plot element we want to animate
