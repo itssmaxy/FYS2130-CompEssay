@@ -290,7 +290,6 @@ def animate1(i):
 # New artists and updater for the spinning bodies
 # Renders two object artists via the same renderer
 
-
 def init3():
     line3.set_data([], [])
     line2.set_data([],[])
