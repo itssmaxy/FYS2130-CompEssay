@@ -319,5 +319,9 @@ anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
 anim2 = animation.FuncAnimation(fig, update, init_func=init3,
                                frames=int(count/intr), fargs=[line2, line3,patch1,patch2], interval=150, blit=True)
 
+
+
+anim1.save('anim1.gif', writer='imagemagick', fps = 60)
+anim2.save('anim2.gif', writer='imagemagick',fps = 60)
 plt.legend()
 plt.show()
