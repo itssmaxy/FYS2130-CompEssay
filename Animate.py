@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 #from progress.bar import ChargingBar
 from matplotlib import animation
+from matplotlib.offsetbox import TextArea, DrawingArea, OffsetImage, AnnotationBbox
+import matplotlib.image as mpimg
+
 
 dict = {}
 """
@@ -304,6 +307,11 @@ def update(i, line2, line3,patch1,patch2):
     line3.set_data(x, y)
     patch2.center= (x[-1],y[-1])
     ax2.add_patch(patch2)
+    if (i >96*int(count/intr)/100 and answer=='c'):
+        imagebox = OffsetImage(mpimg.imread('boom.png'),zoom=(rat))
+        ab = AnnotationBbox(imagebox, (planet_orbit[-1,0], planet_orbit[-1,1]))
+        ax2.add_artist(ab)
+        plt.draw()
     return [line2,line3,patch1,patch2]
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
@@ -311,5 +319,6 @@ anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
                                frames=int(count/intr), interval=150, blit=True)
 anim2 = animation.FuncAnimation(fig, update, init_func=init3,
                                frames=int(count/intr), fargs=[line2, line3,patch1,patch2], interval=150, blit=True)
+
 plt.legend()
 plt.show()
