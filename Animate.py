@@ -313,7 +313,7 @@ def update(i, line2, line3,patch1,patch2):
     ax2.add_patch(patch2)
     if (i >96*int(count/intr)/100 and answer2=='c'):
         imagebox = OffsetImage(mpimg.imread('boom.png'),zoom=(rat))
-        ab = AnnotationBbox(imagebox, (centr))
+        ab = AnnotationBbox(imagebox, (centr),frameon=False)
         ax2.add_artist(ab)
         plt.draw()
     return [line2,line3,patch1,patch2]
