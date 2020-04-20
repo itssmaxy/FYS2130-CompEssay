@@ -311,5 +311,8 @@ anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
                                frames=int(count/intr), interval=150, blit=True)
 anim2 = animation.FuncAnimation(fig, update, init_func=init3,
                                frames=int(count/intr), fargs=[line2, line3,patch1,patch2], interval=150, blit=True)
+
+anim1.save("Anim1.gif", writer="imagestick", fps = 60)
+anim2.save("Anim2.gif", writer="imagestick", fps = 60)
 plt.legend()
 plt.show()
