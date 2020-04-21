@@ -147,7 +147,7 @@ elif answer == 'o':
 
 
 planet_orbit, sun_orbit, count, h, t,N, dt,answer2 = integrator(planet_1,planet_2,planets_index)
-Sampling = int(2*len(h[count+1]))
+Sampling = int(2*len(h[:count+1]))
 #Fourier Transform
 
 def MonsieurFourier(h,dt,t):
