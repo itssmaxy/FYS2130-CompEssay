@@ -154,7 +154,7 @@ def MonsieurFourier(h,dt,t):
 
     dt = dt
     FourierTransform = np.fft.fft(h)
-    Sample_Frequency = np.linspace(0,1/(2*t), Sampling//2)
+    Sample_Frequency = np.linspace(0,Sampling/2, Sampling//2)
 
     plt.plot(Sample_Frequency, 2/Sampling*np.abs(FourierTransform[:Sampling//2]),label="Fourier Analysis")
     plt.xlabel('Frekvens [Hz]')
@@ -186,16 +186,14 @@ def Wavelet_Transform(sp, w, h, fs, N, Func, w_a, K):
 
     return np.fft.ifft(sp*wavelet)
 
-def Wavelet_diagram(h, t, Sampling):
+def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, K=8):
     """
     Runs Wavelet_Transform for all wavelets across the signal and compiles them into one diagram
     """
     N = h.size
     fs = Sampling
     Func = np.linspace(0, N/fs, N)
-    K = 4
-    Run = 60000#6000
-    omega_a = np.arange(54000, Run)*2*np.pi
+    omega_a = np.arange(Fmin, Fmax)*2*np.pi
     sp = np.fft.fft(h)
     w = np.linspace(0, fs, N)*2*np.pi
     wavelet_stuff = np.zeros((len(omega_a), len(Func)))
@@ -205,9 +203,11 @@ def Wavelet_diagram(h, t, Sampling):
 
     for i in range(len(omega_a)):
         wavelet_stuff[i,:] = np.abs(Wavelet_Transform(sp, w, h, fs, N, Func, omega_a[i], K))
-        print("Running: % ", (i/len(omega_a))*100)
+        print(f"{i/len(omega_a)*100:.1f} %", end='\r', flush=True)
+        #print(i/len(omega_a)*100," percent complete", end='\r', flush=True)
         #bar.next()
     #bar.finish()
+    print("")
     print("DONE!")
 
     X, Y = np.meshgrid(Func, omega_a/(2*np.pi))
@@ -222,7 +222,13 @@ def ask2():
     print("Do you wish to do Wavelet analysis? (y,n)")
     ans = input("Answer: ")
     if ans == "y":
-        Wavelet_diagram(h[:(count+1000)], t, Sampling)
+        print("Choose upper freq: ")
+        Fmax = int(input("Fmax: "))
+        print("Choose start freq:  ")
+        Fmin = int(input("Fmin: "))
+        print("Choose K-value")
+        K = int(input("K: "))
+        Wavelet_diagram(h[:(count+1000)], t, Sampling, Fmax, Fmin, K)
     elif ans == "n":
         pass
     else:
