@@ -223,7 +223,7 @@ def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, K=8):
     plt.ylabel("Frekvens ['Hz']")
     plt.xlabel("tid")
     plt.title("{} with {} and {}, with k = {}".format(action,object1, object2, K))
-    plt.savefig("{}_{}_{}.png".format(object1,object2,action))
+    #plt.savefig("{}_{}_{}.png".format(object1,object2,action))
     EndT = time.perf_counter()
     print(f"Total elapsed time for wavelet process: {(EndT - StartT):.1f} seconds")
     print("")
