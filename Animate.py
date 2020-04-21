@@ -157,6 +157,8 @@ def MonsieurFourier(h,dt,t):
     Sample_Frequency = np.linspace(0,1/(2*t), Sampling//2)
 
     plt.plot(Sample_Frequency, 2/Sampling*np.abs(FourierTransform[:Sampling//2]),label="Fourier Analysis")
+    plt.xlabel('Frekvens [Hz]')
+    plt.ylabel('Utslag')
     plt.legend()
     plt.show()
 
@@ -172,8 +174,6 @@ def ask():
 ask()
 
 # Wavelet Analasys
-
-
 def Wavelet_Transform(sp, w, h, fs, N, Func, w_a, K):
     """
     runs a specific wavelet through the signal
