@@ -29,7 +29,7 @@ Gr = 39.47841760435743
 c = 63239.7263 #Au/yr
 r1= 6.32397263E12 #AU Distance from the objects where we detect the distortion/wave.
 
-Sampling = int(1E5)
+Sampling = int(1E6)
 
 
 #Integration Loop
@@ -72,6 +72,7 @@ def integrator(planets,sun,planets_index):
     v_sun = np.asarray([v0xsun,v0ysun],float)
     a_i_sun = -sum(a_i_planets)/sunmass
     count = 0
+    answer2='o'
     for i in range(N-1):
         t+=dt
         cm_x = [x_planets[g,i,0]*masses[g] for g in range(number_of_planets)]
@@ -105,13 +106,15 @@ def integrator(planets,sun,planets_index):
 
         if np.linalg.norm(v_planets[0])>100:
             print('THE OBJECTS HAVE COLLIDED!')
+            answer2='c'
             break
         if R<(radius_1+radius_2):
             print('THE OBJECTS HAVE COLLIDED!')
+            answer2='c'
             break
         count +=1
 
-    return x_planets,x_sun, count, h, t,N ,dt
+    return x_planets,x_sun, count, h, t,N ,dt,answer2
 
 
 def h_stretch(r,omega,R,t):
@@ -143,7 +146,7 @@ elif answer == 'o':
     planet_2 = np.asarray([0,0,0,0])
 
 
-planet_orbit, sun_orbit, count, h, t,N, dt = integrator(planet_1,planet_2,planets_index)
+planet_orbit, sun_orbit, count, h, t,N, dt,answer2 = integrator(planet_1,planet_2,planets_index)
 
 #Fourier Transform
 
@@ -190,9 +193,9 @@ def Wavelet_diagram(h, t, Sampling):
     N = h.size
     fs = Sampling
     Func = np.linspace(0, N/fs, N)
-    K = 8
-    Run = 6000#6000
-    omega_a = np.arange(200, Run)*2*np.pi
+    K = 4
+    Run = 60000#6000
+    omega_a = np.arange(54000, Run)*2*np.pi
     sp = np.fft.fft(h)
     w = np.linspace(0, fs, N)*2*np.pi
     wavelet_stuff = np.zeros((len(omega_a), len(Func)))
@@ -274,6 +277,8 @@ line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object
 patch1 = plt.Circle((planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1]), radius_1,color=dict[object1][2])
 patch2 = plt.Circle((sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1]), radius_2,color=dict[object2][2])
 
+centr =sun_orbit[-1,:] +  radius_2*(planet_orbit[-1,:]-sun_orbit[-1,:])/np.linalg.norm(planet_orbit[-1,:]-sun_orbit[-1,:])
+
 # initialization function: plot the background of each frame
 def init1():
     line1.set_data([], [])
@@ -289,7 +294,6 @@ def animate1(i):
 
 # New artists and updater for the spinning bodies
 # Renders two object artists via the same renderer
-
 
 def init3():
     line3.set_data([], [])
@@ -307,9 +311,9 @@ def update(i, line2, line3,patch1,patch2):
     line3.set_data(x, y)
     patch2.center= (x[-1],y[-1])
     ax2.add_patch(patch2)
-    if (i >96*int(count/intr)/100 and answer=='c'):
-        imagebox = OffsetImage(mpimg.imread('boom.png'),zoom=(rat))
-        ab = AnnotationBbox(imagebox, (planet_orbit[-1,0], planet_orbit[-1,1]))
+    if (i >96*int(count/intr)/100 and answer2=='c'):
+        imagebox = OffsetImage(mpimg.imread('boom.png'),zoom=(rat*3))
+        ab = AnnotationBbox(imagebox, (centr),frameon=False)
         ax2.add_artist(ab)
         plt.draw()
     return [line2,line3,patch1,patch2]
@@ -322,7 +326,7 @@ anim2 = animation.FuncAnimation(fig, update, init_func=init3,
 
 
 
-anim1.save('anim1.gif', writer='imagemagick', fps = 60)
-anim2.save('anim2.gif', writer='imagemagick',fps = 60)
+#anim1.save('anim1.gif', writer='imagemagick', fps = 60)
+#anim2.save('anim2.gif', writer='imagemagick',fps = 60)
 plt.legend()
 plt.show()
