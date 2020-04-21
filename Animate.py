@@ -203,16 +203,19 @@ def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, K=8):
     print("Running Wavelet analasys!")
 
     #bar = ChargingBar('Processing', max = len(omega_a))
-
+    import time
+    StartT = time.perf_counter()
     for i in range(len(omega_a)):
         wavelet_stuff[i,:] = np.abs(Wavelet_Transform(sp, w, h, fs, N, Func, omega_a[i], K))
-        print(f"{i/len(omega_a)*100:.1f} %", end='\r', flush=True)
-        #print(i/len(omega_a)*100," percent complete", end='\r', flush=True)
+        print(f" {i/len(omega_a)*100:.1f}%", end='\r', flush=True)
         #bar.next()
     #bar.finish()
     print("")
     print("DONE!")
-
+    print("")
+    FinCompT = time.perf_counter()
+    print(f"Elapsed time for computation: {(FinCompT - StartT):.1f} seconds")
+    print("Starting matplotlib plotting..")
     X, Y = np.meshgrid(Func, omega_a/(2*np.pi))
     plt.title("Wavelet Analasys")
     plt.contourf(X, Y, wavelet_stuff,)
@@ -221,7 +224,11 @@ def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, K=8):
     plt.xlabel("tid")
     plt.title("{} with {} and {}, with k = {}".format(action,object1, object2, K))
     plt.savefig("{}_{}_{}.png".format(object1,object2,action))
+    EndT = time.perf_counter()
+    print(f"Total elapsed time for wavelet process: {(EndT - StartT):.1f} seconds")
+    print("")
     plt.show()
+
 
 def ask2():
     print("Do you wish to do Wavelet analysis? (y,n)")
