@@ -48,7 +48,7 @@ def integrator(planets,sun,planets_index):
 
 
     time = float(input("Choose simulation time in yrs: "))
-    dt = 0.00001
+    dt = 0.00001 #år
     N = int(time/dt)
 
     t = dt
@@ -141,9 +141,11 @@ v_colide = v_orbit*0.3 + vel*np.asarray([-0.7,0])
 if answer == 'c':
     planet_1 = np.asarray([[dist,0,v_colide[0],v_colide[1]]])
     planet_2 = np.asarray([0,0,0,0])
+    action = "collision"
 elif answer == 'o':
     planet_1 = np.asarray([[dist,0,v_orbit[0],v_orbit[1]]])
     planet_2 = np.asarray([0,0,0,0])
+    action = "orbit"
 
 
 planet_orbit, sun_orbit, count, h, t,N, dt,answer2 = integrator(planet_1,planet_2,planets_index)
@@ -190,12 +192,13 @@ def Wavelet_diagram(h, t, Sampling):
     """
     Runs Wavelet_Transform for all wavelets across the signal and compiles them into one diagram
     """
+    global action
     N = h.size
     fs = Sampling
     Func = np.linspace(0, N/fs, N)
-    K = 4
-    Run = 60000#6000
-    omega_a = np.arange(54000, Run)*2*np.pi
+    K = 8
+    Run = 20000#6000
+    omega_a = np.arange(4000, Run)*2*np.pi
     sp = np.fft.fft(h)
     w = np.linspace(0, fs, N)*2*np.pi
     wavelet_stuff = np.zeros((len(omega_a), len(Func)))
@@ -216,6 +219,8 @@ def Wavelet_diagram(h, t, Sampling):
     plt.colorbar()
     plt.ylabel("Frekvens ['Hz']")
     plt.xlabel("tid")
+    plt.title("{} with {} and {}, with k = {}".format(action,object1, object2, K))
+    plt.savefig("{}_{}_{}.png".format(object1,object2,action))
     plt.show()
 
 def ask2():
