@@ -29,7 +29,7 @@ Gr = 39.47841760435743
 c = 63239.7263 #Au/yr
 r1= 6.32397263E12 #AU Distance from the objects where we detect the distortion/wave.
 
-Sampling = int(1E6)
+
 
 
 #Integration Loop
@@ -147,7 +147,7 @@ elif answer == 'o':
 
 
 planet_orbit, sun_orbit, count, h, t,N, dt,answer2 = integrator(planet_1,planet_2,planets_index)
-
+Sampling = int(2*len/h[count+1])
 #Fourier Transform
 
 def MonsieurFourier(h,dt,t):
@@ -276,39 +276,28 @@ line2, = ax2.plot(planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1],label=
 line3, = ax2.plot(sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1],label=object2,color=dict[object2][2])
 patch1 = plt.Circle((planet_orbit[0:int(intr),0],planet_orbit[0:int(intr),1]), radius_1,color=dict[object1][2])
 patch2 = plt.Circle((sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1]), radius_2,color=dict[object2][2])
-
+line = [line1,line2,line3]
 centr =sun_orbit[-1,:] +  radius_2*(planet_orbit[-1,:]-sun_orbit[-1,:])/np.linalg.norm(planet_orbit[-1,:]-sun_orbit[-1,:])
 
-# initialization function: plot the background of each frame
-def init1():
-    line1.set_data([], [])
-    return line1,
+def init3():
+    line[0].set_data([], [])
+    line[1].set_data([],[])
+    line[2].set_data([], [])
+    return line
 
-# animation function.  This is called sequentially
-def animate1(i):
-    #x = np.linspace(int(i*t/(1e2)),int((i+1)*t/(1e2)), 1e2)
+def update(i,line,patch1,patch2):
     x = np.linspace(0,10,intr)
     y = h[int((i*intr)):int((i+1)*intr)]
-    line1.set_data(x, y)
-    return line1,
-
-# New artists and updater for the spinning bodies
-# Renders two object artists via the same renderer
-
-def init3():
-    line3.set_data([], [])
-    line2.set_data([],[])
-    return line3,line2
-
-def update(i, line2, line3,patch1,patch2):
+    line[0].set_data(x, y)
+    
     x = planet_orbit[int(i*intr):int((i+1)*intr),0]
     y = planet_orbit[int(i*intr):int((i+1)*intr),1]
-    line2.set_data(x, y)
+    line[1].set_data(x, y)
     patch1.center= (x[-1],y[-1])
     ax2.add_patch(patch1)
     x = sun_orbit[int(i*intr):int((i+1)*intr),0]
     y = sun_orbit[int(i*intr):int((i+1)*intr),1]
-    line3.set_data(x, y)
+    line[2].set_data(x, y)
     patch2.center= (x[-1],y[-1])
     ax2.add_patch(patch2)
     if (i >96*int(count/intr)/100 and answer2=='c'):
@@ -316,15 +305,11 @@ def update(i, line2, line3,patch1,patch2):
         ab = AnnotationBbox(imagebox, (centr),frameon=False)
         ax2.add_artist(ab)
         plt.draw()
-    return [line2,line3,patch1,patch2]
+    return line
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
-anim1 = animation.FuncAnimation(fig, animate1, init_func=init1,
-                               frames=int(count/intr), interval=150, blit=True)
-anim2 = animation.FuncAnimation(fig, update, init_func=init3,
-                               frames=int(count/intr), fargs=[line2, line3,patch1,patch2], interval=150, blit=True)
-
-
+anim1 = animation.FuncAnimation(fig, update, init_func=init3,
+                               frames=int(count/intr), fargs=[line,patch1,patch2], interval=150, blit=True)
 
 #anim1.save('anim1.gif', writer='imagemagick', fps = 60)
 #anim2.save('anim2.gif', writer='imagemagick',fps = 60)
