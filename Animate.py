@@ -201,7 +201,7 @@ def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, dt, K=8):
     """
     dt = dt
     global action
-    N = (h.size)
+    N = h.size
     Yr = dt*N
     Gfrate = N/(Yr*Hdef)
     fs = Sampling*Gfrate
@@ -221,7 +221,6 @@ def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, dt, K=8):
         print(f" {i/len(omega_a)*100:.1f}%", end='\r', flush=True)
         #bar.next()
     #bar.finish()
-    #print("")
     print("DONE!")
     print("")
     FinCompT = time.perf_counter()
@@ -232,7 +231,7 @@ def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, dt, K=8):
     plt.contourf(X, Y, wavelet_stuff,)
     plt.colorbar()
     plt.ylabel("Frekvens ['Hz']")
-    plt.xlabel("tid")
+    plt.xlabel("tid ['Year']")
     plt.title("{} with {} and {}, with k = {}".format(action,object1, object2, K))
     #plt.savefig("{}_{}_{}.png".format(object1,object2,action))
     EndT = time.perf_counter()
