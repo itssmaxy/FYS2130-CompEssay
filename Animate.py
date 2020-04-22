@@ -151,17 +151,19 @@ elif answer == 'o':
 planet_orbit, sun_orbit, count, h, t,N, dt,answer2 = integrator(planet_1,planet_2,planets_index)
 Sampling = int(2*len(h[:count+1]))
 #Fourier Transform
-
+Hdef = int(31556926)
 def MonsieurFourier(h,dt,t):
 
     dt = dt
     N = h.size
     Yr = N*dt
-    Hdef = 365*24*60*60
-    frate = N/(Yr*Hdef)*60
-    print(frate)
-    FourierTransform = np.fft.fft(h)
-    Sample_Frequency = np.linspace(0,Sampling/2, Sampling//2)
+    Hdef = int(31556926)
+    frate = N/(Yr*Hdef)
+    Gfrate = frate
+    print("Yr: ", Yr)
+    print(frate, "Samples pr. second")
+    FourierTransform = np.fft.fft(h)*frate
+    Sample_Frequency = np.linspace(0,Sampling/2, Sampling//2)*frate
 
     plt.plot(Sample_Frequency, 2/Sampling*np.abs(FourierTransform[:Sampling//2]),label="Fourier Analysis")
     plt.xlabel('Frekvens [Hz]')
@@ -173,7 +175,7 @@ def ask():
     print("Do you wish to do a Fourier analysis? (y,n)")
     ans = input("Answer: ")
     if ans == "y":
-        MonsieurFourier(h[:count+1],dt,t)
+        MonsieurFourier(h,dt,t)
     elif ans == "n":
         pass
     else:
@@ -193,16 +195,20 @@ def Wavelet_Transform(sp, w, h, fs, N, Func, w_a, K):
 
     return np.fft.ifft(sp*wavelet)
 
-def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, K=8):
+def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, dt, K=8):
     """
     Runs Wavelet_Transform for all wavelets across the signal and compiles them into one diagram
     """
+    dt = dt
     global action
     N = h.size
-    fs = Sampling
+    Yr = dt*N
+    Gfrate = N/(Yr*Hdef)
+    fs = Sampling*Gfrate
+    print(fs)
     Func = np.linspace(0, N/fs, N)
     omega_a = np.arange(Fmin, Fmax)*2*np.pi
-    sp = np.fft.fft(h)
+    sp = np.fft.fft(h)*Gfrate
     w = np.linspace(0, fs, N)*2*np.pi
     wavelet_stuff = np.zeros((len(omega_a), len(Func)))
     print("Running Wavelet analasys!")
@@ -245,7 +251,7 @@ def ask2():
         Fmin = int(input("Fmin: "))
         print("Choose K-value")
         K = int(input("K: "))
-        Wavelet_diagram(h[:(count+1000)], t, Sampling, Fmax, Fmin, K)
+        Wavelet_diagram(h[:(count+1)], t, Sampling, Fmax, Fmin, dt, K)
     elif ans == "n":
         pass
     else:
