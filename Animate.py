@@ -251,7 +251,7 @@ def ask2():
         Fmin = int(input("Fmin: "))
         print("Choose K-value")
         K = int(input("K: "))
-        Wavelet_diagram(h[:(count+1)], t, Sampling, Fmax, Fmin, dt, K)
+        Wavelet_diagram(h[:(count+int((count*0.1)))], t, Sampling, Fmax, Fmin, dt, K)
     elif ans == "n":
         pass
     else:
