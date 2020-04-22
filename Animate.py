@@ -201,12 +201,12 @@ def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, dt, K=8):
     """
     dt = dt
     global action
-    N = h.size
+    N = (h.size)
     Yr = dt*N
     Gfrate = N/(Yr*Hdef)
     fs = Sampling*Gfrate
     print(fs)
-    Func = np.linspace(0, N/fs, N)
+    Func = np.linspace(0, t, N)
     omega_a = np.arange(Fmin, Fmax)*2*np.pi
     sp = np.fft.fft(h)*Gfrate
     w = np.linspace(0, fs, N)*2*np.pi
@@ -221,7 +221,7 @@ def Wavelet_diagram(h, t, Sampling, Fmax, Fmin, dt, K=8):
         print(f" {i/len(omega_a)*100:.1f}%", end='\r', flush=True)
         #bar.next()
     #bar.finish()
-    print("")
+    #print("")
     print("DONE!")
     print("")
     FinCompT = time.perf_counter()
