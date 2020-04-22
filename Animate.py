@@ -155,6 +155,11 @@ Sampling = int(2*len(h[:count+1]))
 def MonsieurFourier(h,dt,t):
 
     dt = dt
+    N = h.size
+    Yr = N*dt
+    Hdef = 365*24*60*60
+    frate = N/(Yr*Hdef)*60
+    print(frate)
     FourierTransform = np.fft.fft(h)
     Sample_Frequency = np.linspace(0,Sampling/2, Sampling//2)
 
