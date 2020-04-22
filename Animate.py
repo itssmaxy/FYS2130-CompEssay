@@ -307,6 +307,9 @@ patch2 = plt.Circle((sun_orbit[0:int(intr),0],sun_orbit[0:int(intr),1]), radius_
 line = [line1,line2,line3]
 centr =sun_orbit[-1,:] +  radius_2*(planet_orbit[-1,:]-sun_orbit[-1,:])/np.linalg.norm(planet_orbit[-1,:]-sun_orbit[-1,:])
 
+# New artists and updater for the spinning bodies
+# Renders two object artists via the same renderer
+
 def init3():
     line[0].set_data([], [])
     line[1].set_data([],[])
@@ -317,7 +320,7 @@ def update(i,line,patch1,patch2):
     x = np.linspace(0,10,intr)
     y = h[int((i*intr)):int((i+1)*intr)]
     line[0].set_data(x, y)
-    
+
     x = planet_orbit[int(i*intr):int((i+1)*intr),0]
     y = planet_orbit[int(i*intr):int((i+1)*intr),1]
     line[1].set_data(x, y)
@@ -339,7 +342,6 @@ def update(i,line,patch1,patch2):
 anim1 = animation.FuncAnimation(fig, update, init_func=init3,
                                frames=int(count/intr), fargs=[line,patch1,patch2], interval=150, blit=True)
 
-#anim1.save('anim1.gif', writer='imagemagick', fps = 60)
-#anim2.save('anim2.gif', writer='imagemagick',fps = 60)
 plt.legend()
-plt.show()
+plt.close(anim1._fig)
+HTML(anim1.to_jshtml())
