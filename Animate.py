@@ -175,7 +175,7 @@ def ask():
     print("Do you wish to do a Fourier analysis? (y,n)")
     ans = input("Answer: ")
     if ans == "y":
-        MonsieurFourier(h,dt,t)
+        MonsieurFourier(h[:count+1],dt,t)
     elif ans == "n":
         pass
     else:
