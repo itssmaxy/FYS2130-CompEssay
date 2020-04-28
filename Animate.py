@@ -339,7 +339,7 @@ def update(i,line,patch1,patch2):
 anim1 = animation.FuncAnimation(fig, update, init_func=init3,
                                frames=int(count/intr), fargs=[line,patch1,patch2], interval=150, blit=True)
 
-#anim1.save('anim1.gif', writer='imagemagick', fps = 60)
-#anim2.save('anim2.gif', writer='imagemagick',fps = 60)
+anim1.save('anim1.gif', writer='imagemagick', fps = 80)
+
 plt.legend()
 plt.show()
